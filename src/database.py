@@ -11,8 +11,7 @@ class Base(DeclarativeBase):
 class DataBaseTools:
 
     def __init__(self, _config: Config):
-        self.url = f"postgresql+asyncpg://{config.user}:{config.password}@'\
-        '{config.host}/{config.database}"
+        self.url = f"postgresql+asyncpg://{config.user}:{config.password}@{config.host}/{config.database}"
         self.engine = create_async_engine(
             url=self.url
         )
