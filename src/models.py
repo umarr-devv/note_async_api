@@ -34,3 +34,9 @@ class Post(Base):
     update_on: datetime = Column(Date, default=datetime.now, onupdate=datetime.now)
     user: User = relationship(back_populates='posts')
     user_id: int = mapped_column(ForeignKey('users.user_id'))
+    
+    def __str__(self):
+        return f"{self.__class__.__name__}(id={self.user_id})"
+
+    def __repr__(self):
+        return self.__str__()
