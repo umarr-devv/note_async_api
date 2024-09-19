@@ -10,6 +10,7 @@ class User(Base):
     __tablename__ = 'users'
 
     user_id: int = Column(Integer, primary_key=True, autoincrement=True)
+    username: str = Column(String, unique=True, nullable=False)
     tg_id: int = Column(Integer, unique=True, nullable=True)
     password: bytes = Column(LargeBinary, nullable=False)
     created_on = Column(Date, default=datetime.now)
