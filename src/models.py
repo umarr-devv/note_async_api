@@ -21,3 +21,15 @@ class User(Base):
     def __repr__(self):
         return self.__str__()
 
+
+class Post(Base):
+    __tablename__ = 'posts'
+
+    post_id: int = Column(Integer, primary_key=True, autoincrement=True)
+    title: str = Column(String(length=64), unique=True)
+    content: str = Column(Text, default='', server_default='')
+    tags: Mapped[int] = Column(JSON)
+    created_on: datetime = Column(Date, default=datetime.now)
+    update_on: datetime = Column(Date, default=datetime.now, onupdate=datetime.now)
+    user: User = relationship(back_populates='posts')
+    user_id: int = mapped_column(ForeignKey('users.user_id'))
