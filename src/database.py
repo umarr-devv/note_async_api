@@ -1,4 +1,4 @@
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.orm import DeclarativeBase
 
 from src.config import Config, config
@@ -21,6 +21,11 @@ class DataBaseTools:
             autocommit=False,
             expire_on_commit=False
         )
+
+    async def session_dependency(self) -> AsyncSession:
+        async with self.session_factory() as session:
+            yield session
+            await session.close()
 
 
 db_tools = DataBaseTools(config)
