@@ -14,7 +14,7 @@ class User(Base):
     password: bytes = Column(LargeBinary, nullable=False)
     created_on = Column(Date, default=datetime.now)
     update_on = Column(Date, default=datetime.now, onupdate=datetime.now)
-    posts: list['Post'] = relationship(back_populates='user')
+    posts: Mapped[list['Post']] = relationship(back_populates='user')
 
     def __str__(self):
         return f"{self.__class__.__name__}(id={self.user_id})"
@@ -29,12 +29,12 @@ class Post(Base):
     post_id: int = Column(Integer, primary_key=True, autoincrement=True)
     title: str = Column(String(length=64), unique=True)
     content: str = Column(Text, default='', server_default='')
-    tags: Mapped[int] = Column(JSON)
+    tags = Column(JSON)
     created_on: datetime = Column(Date, default=datetime.now)
     update_on: datetime = Column(Date, default=datetime.now, onupdate=datetime.now)
-    user: User = relationship(back_populates='posts')
-    user_id: int = mapped_column(ForeignKey('users.user_id'))
-    
+    user: Mapped['User'] = relationship(back_populates='posts')
+    user_id: int = Column(ForeignKey('users.user_id'))
+
     def __str__(self):
         return f"{self.__class__.__name__}(id={self.user_id})"
 
