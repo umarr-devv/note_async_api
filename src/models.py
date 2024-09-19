@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import String, Text, ForeignKey, Integer, Column, Date, JSON
+from sqlalchemy import String, Text, ForeignKey, Integer, Column, Date, JSON, LargeBinary
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database import Base
@@ -11,6 +11,7 @@ class User(Base):
 
     user_id: int = Column(Integer, primary_key=True, autoincrement=True)
     tg_id: int = Column(Integer, unique=True, nullable=True)
+    password: bytes = Column(LargeBinary, nullable=False)
     created_on = Column(Date, default=datetime.now)
     update_on = Column(Date, default=datetime.now, onupdate=datetime.now)
     posts: list['Post'] = relationship(back_populates='user')
