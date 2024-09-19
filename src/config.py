@@ -1,14 +1,23 @@
 from pydantic_settings import BaseSettings
+from yaml import safe_load
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
 class Config(BaseSettings):
-    database: str = 'fastapiproject'
-    host: str = 'localhost'
-    user: str = 'postgres'
-    password: str = 'qal3ko8tFgzyuL3vBeQW55UFNN9KcLJfeRisBhugm3NYc0WoUIKbzThf8sn0SWKY'
+    database: str
+    host: str
+    user: str
+    password: str
+    jwt_private_key: str
+    jwt_public_key: str
 
-    database_url: str = f"postgresql+asyncpg://{user}:{password}@{host}/{database}"
-    database_echo: bool = True
+
+def create_config(config_file: str) -> Config:
+    with open(BASE_DIR + '/' + config_file, mode='r', encoding='utf-8') as file:
+        data = safe_load(file)
+    return Config(**data)
 
 
-config = Config()
+config = create_config('config.yml')
